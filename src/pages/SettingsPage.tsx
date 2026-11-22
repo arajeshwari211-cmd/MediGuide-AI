@@ -1,3 +1,4 @@
+
 import { Database, Globe, KeyRound, LogOut, Moon, Shield, Sun, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
@@ -31,6 +32,7 @@ export function SettingsPage() {
   const [changingPassword, setChangingPassword] = useState(false);
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [deletingAccount, setDeletingAccount] = useState(false);
 
@@ -116,22 +118,51 @@ export function SettingsPage() {
   const handleDeleteAccount = async () => {
     if (!deletePassword) {
       showToast(t.settings.enterPasswordToast, 'error');
+      setDeleteConfirmOpen(false);
       return;
     }
+
     setDeletingAccount(true);
+
     try {
       await deleteAccount(deletePassword);
       showToast(t.settings.accountDeletedToast, 'info');
+      setDeleteDialogOpen(false);
+      setDeleteConfirmOpen(false);
+      setDeletePassword('');
     } catch (err) {
       showToast(
-        err instanceof Error && err.message ? err.message : t.settings.accountDeleteFailedToast,
+        err instanceof Error && err.message
+          ? err.message
+          : t.settings.accountDeleteFailedToast,
         'error'
       );
+
+      // Keep the password entry available so the user can try again.
+      setDeleteConfirmOpen(false);
     } finally {
       setDeletingAccount(false);
-      setDeleteDialogOpen(false);
-      setDeletePassword('');
     }
+  };
+
+  const openDeleteAccount = () => {
+    setDeletePassword('');
+    setDeleteConfirmOpen(false);
+    setDeleteDialogOpen(true);
+  };
+
+  const cancelDeleteAccount = () => {
+    setDeleteConfirmOpen(false);
+    setDeleteDialogOpen(false);
+    setDeletePassword('');
+  };
+
+  const continueDeleteAccount = () => {
+    if (!deletePassword) {
+      showToast(t.settings.enterPasswordToast, 'error');
+      return;
+    }
+    setDeleteConfirmOpen(true);
   };
 
   return (
@@ -379,7 +410,7 @@ export function SettingsPage() {
 
           <button
             type="button"
-            onClick={() => setDeleteDialogOpen(true)}
+            onClick={openDeleteAccount}
             className="inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700"
           >
             <Trash2 className="h-4 w-4" />
@@ -395,26 +426,43 @@ export function SettingsPage() {
             <input
               id="del-pw"
               type="password"
+              autoComplete="current-password"
               value={deletePassword}
               onChange={(e) => setDeletePassword(e.target.value)}
               placeholder={t.settings.confirmDeletePasswordPlaceholder}
               className="mt-2 w-full max-w-xs rounded-lg border border-red-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-red-500 focus:outline-none dark:border-red-800 dark:bg-slate-900 dark:text-slate-100"
             />
+
+            <div className="mt-3 flex flex-wrap justify-end gap-2">
+              <button
+                type="button"
+                onClick={cancelDeleteAccount}
+                disabled={deletingAccount}
+                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-white disabled:opacity-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                {t.common.cancel}
+              </button>
+              <button
+                type="button"
+                onClick={continueDeleteAccount}
+                disabled={!deletePassword || deletingAccount}
+                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Continue
+              </button>
+            </div>
           </div>
         )}
       </section>
 
       <ConfirmDialog
-        open={deleteDialogOpen && deletePassword.length > 0}
+        open={deleteConfirmOpen}
         title={t.settings.deleteAccountTitle}
         description={t.settings.deleteAccountDescription}
         confirmLabel={t.settings.deleteForeverButton}
         loading={deletingAccount}
         onConfirm={handleDeleteAccount}
-        onCancel={() => {
-          setDeleteDialogOpen(false);
-          setDeletePassword('');
-        }}
+        onCancel={() => setDeleteConfirmOpen(false)}
       />
     </div>
   );
