@@ -161,15 +161,15 @@ If you want a public URL immediately from Google AI Studio Build mode, use the *
    - `APP_URL=<your-public-https-url>`
    - `PORT=3000` (or let your hosting platform inject `PORT` automatically)
 6. **Persistent SQLite Storage (Important):**
-   - By default, SQLite writes to `./mediguide.db`. On ephemeral containers (such as Render Free Tier), mount a persistent disk (e.g., `/data`) and set `DB_PATH=/data/mediguide.db` so user accounts, health records, saved reports, and notifications persist across redeploys.
+   - MediGuide AI uses SQLite to store user accounts, health records, saved reports, and notifications. By default, the database is stored locally in `./mediguide.db`.
 
+   On hosting platforms with ephemeral storage, such as Render Free Tier, database files may be lost when the service restarts or redeploys. To preserve data, configure a persistent disk and set the `DB_PATH` environment variable to the mounted disk location (for example, `/data/mediguide.db`).
 ---
 
 ## 11. Database Note
+- **Database Configuration:** MediGuide AI uses SQLite (`mediguide.db`) with WAL mode and foreign keys enabled. User data is isolated using strict per-user `WHERE user_id = ?` queries. Passwords are secured using `scrypt` hashing, and sessions use HMAC-SHA256 signed `HttpOnly` cookies.
 
-- **Active Runtime Configuration:** MediGuide AI runs out of the box using a persistent **SQLite** database (`mediguide.db`, WAL mode, foreign keys enabled) with strict per-user `WHERE user_id = ?` isolation and `scrypt` + HMAC-SHA256 `HttpOnly` session cookies.
-
----
+- **Data Persistence:** Database persistence depends on the hosting environment. On platforms with ephemeral storage, configure a persistent disk and set the `DB_PATH` environment variable to prevent database files from being lost during restarts or redeployments.
 
 ## 12. Gemini API Setup
 
