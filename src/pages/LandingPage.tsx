@@ -112,7 +112,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
   };
 
   return (
-    <div id="home" className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div id="home" className="min-h-screen w-full min-w-0 overflow-x-clip bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
         <div className="mx-auto flex min-h-16 max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:h-16 sm:flex-nowrap sm:gap-8 sm:py-0 sm:px-6 lg:px-8">
