@@ -115,7 +115,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
     <div id="home" className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Top Navigation Bar */}
       <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-sm dark:border-slate-800 dark:bg-slate-950/95">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-8 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex min-h-16 max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:h-16 sm:flex-nowrap sm:gap-8 sm:py-0 sm:px-6 lg:px-8">
           <a href="#home" className="whitespace-nowrap shrink-0">
             <BrandLogo />
           </a>
@@ -138,7 +138,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
             </a>
           </nav>
 
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex w-full flex-wrap items-center justify-end gap-2.5 sm:w-auto sm:shrink-0">
             <div className="relative flex items-center">
               <Languages className="pointer-events-none absolute left-2.5 h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
               <select
@@ -180,55 +180,65 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-slate-100 bg-gradient-to-b from-emerald-50/50 via-white to-white py-16 lg:py-24 dark:border-slate-900 dark:from-emerald-950/20 dark:via-slate-950 dark:to-slate-950">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid items-stretch gap-12 lg:grid-cols-12">
-            <div className="flex flex-col justify-center lg:col-span-6">
-              <p className="text-xs font-medium tracking-wide text-emerald-700 dark:text-emerald-400">
-                {t.landing.heroBadge}
-              </p>
-              <h1
-                className="mt-4 font-display font-bold tracking-tight text-slate-900 dark:text-white"
-                style={{ fontSize: 'clamp(2.25rem, 4vw, 3.6rem)', lineHeight: 1.1, textWrap: 'balance' }}
-              >
-                {t.landing.heroTitle}
-              </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
-                {t.landing.heroSubtitle}
-              </p>
+     
+{/* Hero Section */}
+<section className="relative w-full min-w-0 overflow-hidden border-b border-slate-100 bg-gradient-to-b from-emerald-50/50 via-white to-white py-12 sm:py-16 lg:py-24 dark:border-slate-900 dark:from-emerald-950/20 dark:via-slate-950 dark:to-slate-950">
+  <div className="mx-auto w-full min-w-0 max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="grid min-w-0 items-stretch gap-10 lg:grid-cols-12 lg:gap-12">
+      <div className="flex min-w-0 flex-col justify-center lg:col-span-6">
+        <p className="text-xs font-medium tracking-wide text-emerald-700 dark:text-emerald-400">
+          {t.landing.heroBadge}
+        </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <button
-                  type="button"
-                  onClick={() => onOpenAuth('register')}
-                  className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
-                >
-                  <span>{t.landing.getStarted}</span>
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-                <a
-                  href="#features"
-                  className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
-                >
-                  {t.landing.exploreFeatures}
-                </a>
-              </div>
+        <h1
+          className="mt-4 min-w-0 max-w-full break-words font-display font-bold tracking-tight text-slate-900 dark:text-white"
+          style={{
+            fontSize: 'clamp(2rem, 8vw, 3.6rem)',
+            lineHeight: 1.1,
+            textWrap: 'balance',
+            overflowWrap: 'anywhere',
+          }}
+        >
+          {t.landing.heroTitle}
+        </h1>
+
+        <p className="mt-5 w-full max-w-xl break-words text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300">
+          {t.landing.heroSubtitle}
+        </p>
+
+        <div className="mt-8 flex min-w-0 flex-wrap items-center gap-3 sm:gap-4">
+          <button
+            type="button"
+            onClick={() => onOpenAuth('register')}
+            className="inline-flex max-w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-700 sm:px-6"
+          >
+            <span>{t.landing.getStarted}</span>
+            <ArrowRight className="h-4 w-4 shrink-0" />
+          </button>
+
+          <a
+            href="#features"
+            className="inline-flex max-w-full items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 sm:px-6"
+          >
+            {t.landing.exploreFeatures}
+          </a>
+        </div>
+
 
               <p className="mt-6 text-xs text-slate-500 dark:text-slate-400">
                 {t.landing.heroDisclaimer}
               </p>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="h-full overflow-hidden rounded-2xl border border-slate-200 bg-emerald-50/40 dark:border-slate-800 dark:bg-slate-900">
+            <div className="min-w-0 w-full lg:col-span-6">
+              <div className="w-full min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-emerald-50/40 dark:border-slate-800 dark:bg-slate-900">
                 {!heroImgFailed ? (
                   <img
                     src={heroImage}
                     alt={t.landing.heroImgAlt}
                     referrerPolicy="no-referrer"
                     onError={() => setHeroImgFailed(true)}
-                    className="h-full min-h-[300px] w-full object-cover"
+                    className="block aspect-[4/3] w-full object-cover sm:aspect-video lg:aspect-[4/3]"
                   />
                 ) : (
                   <div className="flex h-full min-h-[320px] flex-col items-center justify-center bg-gradient-to-br from-emerald-50 to-slate-100 p-8 text-center dark:from-emerald-950/40 dark:to-slate-900">
