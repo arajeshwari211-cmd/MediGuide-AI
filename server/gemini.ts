@@ -726,6 +726,15 @@ function normalizeLabStatus(status: unknown): ExtractedLabTest['status'] {
   return 'Not Specified';
 }
 
+
+function cleanReportText(value: unknown): string {
+  if (typeof value !== 'string') return '';
+
+  return value
+    .replace(/\}\s*\{\s*"is_error"\s*:\s*false\s*,\s*"text"\s*:\s*""\s*\}/gi, '')
+    .trim();
+}
+
 const REPORT_FALLBACKS: Record<
   SupportedLanguage,
   {
@@ -930,52 +939,37 @@ export async function explainMedicalReport(input: {
     throw new Error('Could not parse medical report: invalid structured response from AI.');
   }
 
-  const summary =
-    typeof parsed.summary === 'string' && parsed.summary.trim()
-      ? parsed.summary.trim()
-      : fallbacks.summary;
+
+  const summary = cleanReportText(parsed.summary) || fallbacks.summary;
 
   const tests: ExtractedLabTest[] = Array.isArray(parsed.tests)
     ? (parsed.tests as unknown[])
-        .filter((item): item is Record<string, unknown> => Boolean(item && typeof item === 'object'))
+        .filter(
+          (item): item is Record<string, unknown> =>
+            Boolean(item && typeof item === 'object' && !Array.isArray(item))
+        )
         .map((item) => ({
-          testName:
-            typeof item.testName === 'string' && item.testName.trim()
-              ? item.testName.trim()
-              : fallbacks.unnamedTest,
-          reportedValue:
-            typeof item.reportedValue === 'string' && item.reportedValue.trim()
-              ? item.reportedValue.trim()
-              : fallbacks.notProvided,
-          unit:
-            typeof item.unit === 'string' && item.unit.trim() ? item.unit.trim() : fallbacks.notProvided,
-          referenceRange:
-            typeof item.referenceRange === 'string' && item.referenceRange.trim()
-              ? item.referenceRange.trim()
-              : fallbacks.notProvided,
+          testName: cleanReportText(item.testName) || fallbacks.unnamedTest,
+          reportedValue: cleanReportText(item.reportedValue) || fallbacks.notProvided,
+          unit: cleanReportText(item.unit) || fallbacks.notProvided,
+          referenceRange: cleanReportText(item.referenceRange) || fallbacks.notProvided,
           status: normalizeLabStatus(item.status),
-          explanation:
-            typeof item.explanation === 'string' && item.explanation.trim()
-              ? item.explanation.trim()
-              : fallbacks.noExplanation,
+          explanation: cleanReportText(item.explanation) || fallbacks.noExplanation,
         }))
     : [];
 
   const questionsForDoctor = Array.isArray(parsed.questionsForDoctor)
     ? parsed.questionsForDoctor
-        .filter((q): q is string => typeof q === 'string' && q.trim().length > 0)
-        .map((q) => q.trim())
+        .map((question) => cleanReportText(question))
+        .filter(Boolean)
     : [];
 
   const labVarianceNote =
-    typeof parsed.labVarianceNote === 'string' && parsed.labVarianceNote.trim()
-      ? parsed.labVarianceNote.trim()
-      : fallbacks.labVarianceNote;
+    cleanReportText(parsed.labVarianceNote) || fallbacks.labVarianceNote;
 
   const disclaimer =
-    typeof parsed.disclaimer === 'string' && parsed.disclaimer.trim()
-      ? parsed.disclaimer.trim()
-      : fallbacks.disclaimer;
+    cleanReportText(parsed.disclaimer) || fallbacks.disclaimer;
+
 
   return {
     summary,
