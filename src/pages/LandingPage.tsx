@@ -224,7 +224,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
               <div className="h-full overflow-hidden rounded-2xl border border-slate-200 bg-emerald-50/40 dark:border-slate-800 dark:bg-slate-900">
                 {!heroImgFailed ? (
                   <img
-                    src="/src/assets/images/hero_healthcare_illustration_1794749455467.jpg"
+                    src={heroImage}
                     alt={t.landing.heroImgAlt}
                     referrerPolicy="no-referrer"
                     onError={() => setHeroImgFailed(true)}
@@ -290,7 +290,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
               <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
                 {!aboutImgFailed ? (
                   <img
-                    src=src={aboutImage}
+                    src={aboutImage}
                     alt={t.landing.aboutImgAlt}
                     referrerPolicy="no-referrer"
                     onError={() => setAboutImgFailed(true)}
@@ -370,7 +370,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
               <div className="mt-6 w-full shrink-0 overflow-hidden rounded-xl border border-slate-200 lg:mt-0 lg:w-64 dark:border-slate-800">
                 {!reportImgFailed ? (
                   <img
-                    src=src={reportImage}
+                    src={reportImage}
                     alt={t.landing.reportImgAlt}
                     referrerPolicy="no-referrer"
                     onError={() => setReportImgFailed(true)}
