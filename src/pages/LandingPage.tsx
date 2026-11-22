@@ -13,6 +13,9 @@ import {
   Sun,
   X,
 } from 'lucide-react';
+import heroImage from '../assets/images/hero_healthcare_illustration_1794749455467.jpg';
+import aboutImage from '../assets/images/about_sdg3_wellness_1794749455985.jpg';
+import reportImage from '../assets/images/feature_report_explainer_1794749456025.jpg';
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { BrandLogo } from '../components/BrandLogo.tsx';
@@ -287,7 +290,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
               <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
                 {!aboutImgFailed ? (
                   <img
-                    src="/src/assets/images/about_sdg3_wellness_1794749455985.jpg"
+                    src=src={aboutImage}
                     alt={t.landing.aboutImgAlt}
                     referrerPolicy="no-referrer"
                     onError={() => setAboutImgFailed(true)}
@@ -367,7 +370,7 @@ export function LandingPage({ onOpenAuth }: LandingPageProps) {
               <div className="mt-6 w-full shrink-0 overflow-hidden rounded-xl border border-slate-200 lg:mt-0 lg:w-64 dark:border-slate-800">
                 {!reportImgFailed ? (
                   <img
-                    src="/src/assets/images/feature_report_explainer_1794749456025.jpg"
+                    src=src={reportImage}
                     alt={t.landing.reportImgAlt}
                     referrerPolicy="no-referrer"
                     onError={() => setReportImgFailed(true)}
